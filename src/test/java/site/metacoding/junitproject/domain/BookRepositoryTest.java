@@ -1,14 +1,16 @@
 package site.metacoding.junitproject.domain;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest    // DB와 관련된 컴포넌트만 메모리에 로딩
 public class BookRepositoryTest {
@@ -30,6 +32,9 @@ public class BookRepositoryTest {
     // 가정 2 : [ 데이터준비() + 1. 책등록 + 데이터준비() + 2. 책 목록보기] (T) ] --> BookPS의 사이즈가 2가 될 것임 (검증X)
 
     // 결론 : BeforeEach는 항상 다음 메소드 전까지만 Transaction이 같이 돈다.
+
+
+
 
     // 1. 책 등록
     @Test
@@ -67,6 +72,7 @@ public class BookRepositoryTest {
     } // 트랜잭션 종료 (저장된 데이트를 초기화함)
 
     // 3. 책 한건보기
+    @Sql("classpath:db/tableIni.sql")
     @Test
     public void 책한건보기_test() {
         // given
@@ -83,5 +89,18 @@ public class BookRepositoryTest {
 
     // 4. 책 수정
 
+
     // 5. 책 삭제
+    @Sql("classpath:db/tableIni.sql")
+    @Test
+    public void 책삭제_test() {
+        // given
+        Long id = 1L;
+
+        // when
+        bookRepository.deleteById(id);
+
+        // then
+        assertFalse(bookRepository.findById(id).isPresent());
+    }
 }
