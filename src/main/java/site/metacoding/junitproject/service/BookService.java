@@ -1,6 +1,7 @@
 package site.metacoding.junitproject.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -35,9 +36,18 @@ public class BookService {
     }
 
     // 3. 책 한건보기
+    public BookRespDto 책한건보기(Long id) {
+        Optional<Book> bookOP = bookRepository.findById(id);
+        if(bookOP.isPresent()) {  //찾았다면
+            return new BookRespDto().toDto(bookOP.get());
+        } else {
+                throw new RuntimeException("해당 아이디를 찾을 수 없습니다.");
+            }       
+        }
+}
 
     // 4. 책 삭제
 
     // 5. 책 수정
     
-}
+
