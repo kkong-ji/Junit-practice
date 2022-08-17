@@ -44,9 +44,14 @@ public class BookService {
                 throw new RuntimeException("해당 아이디를 찾을 수 없습니다.");
             }       
         }
+
+    // 4. 책 삭제하기
+    @Transactional(rollbackOn = RuntimeException.class)
+    public void 책삭제하기(Long id) {    // 4
+        bookRepository.deleteById(id); // 1, 2, 3
+    }
 }
 
-    // 4. 책 삭제
 
     // 5. 책 수정
     
