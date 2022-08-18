@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import site.metacoding.junitproject.domain.Book;
 import site.metacoding.junitproject.domain.BookRepository;
+import site.metacoding.junitproject.util.MailSender;
 import site.metacoding.junitproject.web.dto.BookRespDto;
 import site.metacoding.junitproject.web.dto.BookSaveReqDto;
 
@@ -19,11 +20,17 @@ import site.metacoding.junitproject.web.dto.BookSaveReqDto;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final MailSender mailSender;
     
     // 1. 책 등록
     @Transactional(rollbackOn = RuntimeException.class)
     public BookRespDto 책등록하기(BookSaveReqDto dto) {
         Book bookPS = bookRepository.save(dto.toEntity());
+        if (bookPS != null) {
+            if (!mailSender.send()) {
+                throw new RuntimeException("메일이 전송되지 않았습니다");
+            }
+        }
         return new BookRespDto().toDto(bookPS);
     }
 
