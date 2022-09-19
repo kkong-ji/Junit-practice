@@ -39,7 +39,6 @@ public class BookService {
         return bookRepository.findAll().stream()
             .map(new BookRespDto()::toDto)
             .collect(Collectors.toList());
-    
     }
 
     // 3. 책 한건보기

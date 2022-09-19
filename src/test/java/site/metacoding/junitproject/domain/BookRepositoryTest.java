@@ -64,6 +64,7 @@ public class BookRepositoryTest {
         List<Book> booksPS = bookRepository.findAll();
         
         System.out.println("사이즈 : ==================================== : " + booksPS.size());
+        
         // then
         assertEquals(title, booksPS.get(0).getTitle());
         assertEquals(author, booksPS.get(0).getAuthor());
