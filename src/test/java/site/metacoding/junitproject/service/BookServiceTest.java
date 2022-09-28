@@ -22,8 +22,8 @@ import site.metacoding.junitproject.domain.Book;
 import site.metacoding.junitproject.domain.BookRepository;
 import site.metacoding.junitproject.util.MailSender;
 import site.metacoding.junitproject.util.MailSenderStub;
-import site.metacoding.junitproject.web.dto.BookRespDto;
-import site.metacoding.junitproject.web.dto.BookSaveReqDto;
+import site.metacoding.junitproject.web.dto.request.BookSaveReqDto;
+import site.metacoding.junitproject.web.dto.response.BookRespDto;
 
 @ExtendWith(MockitoExtension.class) // 가짜 메모리 환경 만들기
 public class BookServiceTest {
