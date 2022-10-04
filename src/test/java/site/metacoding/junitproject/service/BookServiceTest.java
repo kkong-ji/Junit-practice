@@ -23,6 +23,7 @@ import site.metacoding.junitproject.domain.BookRepository;
 import site.metacoding.junitproject.util.MailSender;
 import site.metacoding.junitproject.util.MailSenderStub;
 import site.metacoding.junitproject.web.dto.request.BookSaveReqDto;
+import site.metacoding.junitproject.web.dto.response.BookListRespDto;
 import site.metacoding.junitproject.web.dto.response.BookRespDto;
 
 @ExtendWith(MockitoExtension.class) // 가짜 메모리 환경 만들기
@@ -71,20 +72,14 @@ public class BookServiceTest {
         when(bookRepository.findAll()).thenReturn(books);
 
         // when (실행)
-        List<BookRespDto> bookRespDtoList = bookService.책목록보기();
+        BookListRespDto bookListRespDto = bookService.책목록보기();
 
-        // print
-        bookRespDtoList.stream().forEach((dto) -> {
-            System.out.println("================= 테스트");
-            System.out.println(dto.getId());
-            System.out.println(dto.getTitle());
-        });
 
         // then (검증)
-        assertThat(bookRespDtoList.get(0).getTitle()).isEqualTo("junit강의");
-        assertThat(bookRespDtoList.get(0).getAuthor()).isEqualTo("메타코딩");
-        assertThat(bookRespDtoList.get(1).getTitle()).isEqualTo("spring강의");
-        assertThat(bookRespDtoList.get(1).getAuthor()).isEqualTo("겟인데어");
+        assertThat(bookListRespDto.getItems().get(0).getTitle()).isEqualTo("junit강의");
+        assertThat(bookListRespDto.getItems().get(0).getAuthor()).isEqualTo("메타코딩");
+        assertThat(bookListRespDto.getItems().get(1).getTitle()).isEqualTo("spring강의");
+        assertThat(bookListRespDto.getItems().get(1).getAuthor()).isEqualTo("겟인데어");
     }    
 
     @Test
