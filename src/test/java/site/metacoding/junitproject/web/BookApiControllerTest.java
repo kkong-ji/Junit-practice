@@ -27,9 +27,6 @@ import site.metacoding.junitproject.web.dto.request.BookSaveReqDto;
 public class BookApiControllerTest {
 
     @Autowired
-    private BookService bookService;
-
-    @Autowired
     private TestRestTemplate rt;
 
     private static ObjectMapper om;
