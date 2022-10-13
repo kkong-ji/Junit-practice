@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.jdbc.Sql;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.DocumentContext;
@@ -83,6 +84,7 @@ public class BookApiControllerTest {
         bookRepository.save(book);        
     }
 
+    @Sql("classpath:db/tableIni.sql")
     @Test
     public void getBookList_test() {
         // given
@@ -98,5 +100,26 @@ public class BookApiControllerTest {
 
         assertThat(code).isEqualTo(1);
         assertThat(title).isEqualTo("junit");
+    }
+
+    @Sql("classpath:db/tableIni.sql")
+    @Test
+    public void getBookOne_test() {     // 1. getBookOne_test 시작전에 BeforeEach 시작
+                                        // but, 그 전에 테이블 초기화 실행
+        // given
+        Integer id = 1;
+
+        // when
+        HttpEntity<String> request = new HttpEntity<>(null, headers);
+        ResponseEntity<String> response = rt.exchange("/api/v1/book/" + id, HttpMethod.GET, request, String.class);
+        
+        // then
+        DocumentContext dc = JsonPath.parse(response.getBody());
+        Integer code = dc.read("$.code");
+        String title = dc.read("$.body.title");
+
+        assertThat(code).isEqualTo(1);
+        assertThat(title).isEqualTo("junit");
+
     }
 }
